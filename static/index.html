@@ -1,0 +1,78 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LoveInvite 💗</title>
+<style>
+* { box-sizing: border-box; }
+body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: Arial, sans-serif;
+    color: #fff;
+    background: linear-gradient(145deg, #25113e, #742b79, #d65b91);
+    text-align: center;
+    padding: 25px 16px;
+}
+.card {
+    max-width: 430px;
+    margin: 35px auto;
+    padding: 28px 20px;
+    border: 1px solid #ffffff55;
+    border-radius: 25px;
+    background: #ffffff18;
+    backdrop-filter: blur(12px);
+    box-shadow: 0 15px 45px #17051c66;
+}
+h1 { font-size: 32px; }
+p { line-height: 1.6; }
+button {
+    border: 0;
+    border-radius: 15px;
+    padding: 14px 22px;
+    margin: 8px;
+    font-size: 16px;
+    cursor: pointer;
+}
+.yes { background: #ff75ad; color: white; }
+.no { background: #fff; color: #713b76; }
+.hidden { display: none; }
+#answer { margin-top: 20px; }
+.heart { font-size: 45px; animation: pulse 1.3s infinite; }
+@keyframes pulse {
+    50% { transform: scale(1.2); }
+}
+</style>
+</head>
+<body>
+<div class="card">
+    <div class="heart">💗</div>
+    <h1>У меня есть вопрос...</h1>
+    <p>Я приготовил для тебя кое-что особенное.</p>
+    <p>Готова посмотреть?</p>
+    <button class="yes" onclick="start()">Открыть 💌</button>
+</div>
+
+<div class="card hidden" id="invite">
+    <h1>Маленькое приглашение 💕</h1>
+    <p>Я хотел бы провести с тобой особенный день.</p>
+    <p>Ты согласна?</p>
+    <button class="yes" onclick="answer('Да 💗')">Да 💗</button>
+    <button class="no" onclick="answer('Нет')">Нет</button>
+    <p id="answer"></p>
+</div>
+
+<script>
+function start() {
+    document.querySelector('.card').classList.add('hidden');
+    document.getElementById('invite').classList.remove('hidden');
+}
+function answer(value) {
+    document.getElementById('answer').textContent =
+        value === 'Нет' ? 'Спасибо за честный ответ ❤️' : 'Ура! 💗';
+}
+</script>
+</body>
+</html>
