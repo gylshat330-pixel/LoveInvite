@@ -1,0 +1,14 @@
+<script>
+function start() {
+    document.querySelector('.card').classList.add('hidden');
+    document.getElementById('invite').classList.remove('hidden');
+}
+function answer(value) {
+    document.getElementById('answer').textContent =
+        value === 'Нет' ? 'Спасибо за честный ответ ❤️' : 'Ура! 💗';
+}
+</script>
+
+<script src="/static/app.js"></script>
+</body>
+</html>
