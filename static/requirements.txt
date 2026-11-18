@@ -1,5 +1,0 @@
-LoveInvite/
-├── main.py
-├── requirements.txt
-└── static/
-    └── index.html
