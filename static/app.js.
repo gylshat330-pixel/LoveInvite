@@ -1,0 +1,76 @@
+
+document.addEventListener("DOMContentLoaded", () => {
+    const card = document.createElement("section");
+    card.className = "card";
+    card.innerHTML = `
+        <h2>Наши фотографии 📸</h2>
+        <p>Добавь фотографии и подписи к ним</p>
+        <input type="file" id="photoInput" accept="image/*" multiple>
+        <div id="gallery" style="
+            display:grid;
+            grid-template-columns:repeat(2,1fr);
+            gap:12px;
+            margin-top:20px;
+        "></div>
+
+        <hr style="margin:25px 0; opacity:.3">
+
+        <h2>Небольшие вопросы 💌</h2>
+        <div id="questions">
+            <p>Какое наше воспоминание тебе нравится больше всего?</p>
+            <textarea placeholder="Твой ответ..." rows="3"
+                style="width:100%;border-radius:12px;padding:12px;"></textarea>
+
+            <p>Куда бы ты хотела сходить вместе?</p>
+            <textarea placeholder="Твой ответ..." rows="3"
+                style="width:100%;border-radius:12px;padding:12px;"></textarea>
+        </div>
+        <button class="yes" id="saveAnswers">Сохранить ответы 💗</button>
+        <p id="saveMessage"></p>
+    `;
+
+    document.body.appendChild(card);
+
+    const input = document.getElementById("photoInput");
+    const gallery = document.getElementById("gallery");
+
+    input.addEventListener("change", () => {
+        gallery.innerHTML = "";
+
+        Array.from(input.files).forEach(file => {
+            if (!file.type.startsWith("image/")) return;
+
+            const reader = new FileReader();
+
+            reader.onload = event => {
+                const item = document.createElement("div");
+
+                const img = document.createElement("img");
+                img.src = event.target.result;
+                img.style.width = "100%";
+                img.style.borderRadius = "14px";
+
+                const caption = document.createElement("input");
+                caption.placeholder = "Подпись к фото";
+                caption.style.width = "100%";
+                caption.style.marginTop = "6px";
+
+                item.append(img, caption);
+                gallery.appendChild(item);
+            };
+
+            reader.readAsDataURL(file);
+        });
+    });
+
+    document.getElementById("saveAnswers").addEventListener("click", () => {
+        const answers = Array.from(
+            document.querySelectorAll("#questions textarea")
+        ).map(field => field.value);
+
+        localStorage.setItem("loveinvite_answers", JSON.stringify(answers));
+
+        document.getElementById("saveMessage").textContent =
+            "Ответы сохранены на этом устройстве 💗";
+    });
+});
