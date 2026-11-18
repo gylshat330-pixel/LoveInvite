@@ -1,14 +1,182 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LoveInvite 💗</title>
+<style>
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: Arial, sans-serif;
+    color: white;
+    background: linear-gradient(145deg,#25113e,#742b79,#d65b91);
+    text-align: center;
+    padding: 20px 14px;
+}
+
+.card {
+    max-width: 440px;
+    margin: 25px auto;
+    padding: 26px 20px;
+    border: 1px solid #ffffff55;
+    border-radius: 25px;
+    background: #ffffff18;
+    backdrop-filter: blur(12px);
+    box-shadow: 0 15px 45px #17051c66;
+}
+
+h1 { font-size: 30px; }
+h2 { font-size: 23px; }
+p { line-height: 1.6; }
+
+button {
+    border: 0;
+    border-radius: 15px;
+    padding: 14px 22px;
+    margin: 8px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.yes { background: #ff75ad; color: white; }
+.no { background: white; color: #713b76; }
+
+.hidden { display: none; }
+
+.heart {
+    font-size: 48px;
+    animation: pulse 1.3s infinite;
+}
+
+@keyframes pulse {
+    50% { transform: scale(1.2); }
+}
+
+input, textarea {
+    font: inherit;
+    border: 0;
+    border-radius: 12px;
+    padding: 12px;
+    width: 100%;
+    margin: 7px 0;
+}
+
+#gallery {
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+    gap: 12px;
+    margin-top: 20px;
+}
+
+#gallery img {
+    width: 100%;
+    border-radius: 14px;
+}
+
+.photo-item { min-width: 0; }
+</style>
+</head>
+
+<body>
+
+<div class="card" id="welcome">
+    <div class="heart">💗</div>
+    <h1>У меня есть вопрос...</h1>
+    <p>Я приготовил для тебя кое-что особенное.</p>
+    <p>Готова посмотреть?</p>
+    <button class="yes" onclick="start()">Открыть 💌</button>
+</div>
+
+<div class="card hidden" id="invite">
+    <h1>Маленькое приглашение 💕</h1>
+    <p>Я хотел бы провести с тобой особенный день.</p>
+    <p>Ты согласна?</p>
+    <button class="yes" onclick="answer('Да 💗')">Да 💗</button>
+    <button class="no" onclick="answer('Нет')">Нет</button>
+    <p id="answer"></p>
+</div>
+
+<div class="card">
+    <h2>Наши фотографии 📸</h2>
+    <p>Здесь можно выбрать фотографии и добавить к ним подписи.</p>
+    <input type="file" id="photoInput" accept="image/*" multiple>
+    <div id="gallery"></div>
+</div>
+
+<div class="card">
+    <h2>Небольшие вопросы 💌</h2>
+
+    <p>Какое наше воспоминание тебе нравится больше всего?</p>
+    <textarea id="question1" rows="3" placeholder="Твой ответ..."></textarea>
+
+    <p>Куда бы ты хотела сходить вместе?</p>
+    <textarea id="question2" rows="3" placeholder="Твой ответ..."></textarea>
+
+    <button class="yes" onclick="saveAnswers()">Сохранить ответы 💗</button>
+    <p id="saveMessage"></p>
+</div>
+
 <script>
 function start() {
-    document.querySelector('.card').classList.add('hidden');
-    document.getElementById('invite').classList.remove('hidden');
+    document.getElementById("welcome").classList.add("hidden");
+    document.getElementById("invite").classList.remove("hidden");
 }
+
 function answer(value) {
-    document.getElementById('answer').textContent =
-        value === 'Нет' ? 'Спасибо за честный ответ ❤️' : 'Ура! 💗';
+    document.getElementById("answer").textContent =
+        value === "Нет"
+        ? "Спасибо за честный ответ ❤️"
+        : "Ура! 💗";
+}
+
+const photoInput = document.getElementById("photoInput");
+const gallery = document.getElementById("gallery");
+
+photoInput.addEventListener("change", function() {
+    gallery.innerHTML = "";
+
+    Array.from(this.files).forEach(file => {
+        if (!file.type.startsWith("image/")) return;
+
+        const reader = new FileReader();
+
+        reader.onload = function(event) {
+            const item = document.createElement("div");
+            item.className = "photo-item";
+
+            const img = document.createElement("img");
+            img.src = event.target.result;
+
+            const caption = document.createElement("input");
+            caption.placeholder = "Подпись к фото";
+
+            item.append(img, caption);
+            gallery.appendChild(item);
+        };
+
+        reader.readAsDataURL(file);
+    });
+});
+
+function saveAnswers() {
+    const answers = {
+        first: document.getElementById("question1").value,
+        second: document.getElementById("question2").value
+    };
+
+    localStorage.setItem(
+        "loveinvite_answers",
+        JSON.stringify(answers)
+    );
+
+    document.getElementById("saveMessage").textContent =
+        "Ответы сохранены на этом устройстве 💗";
 }
 </script>
 
-<script src="/static/app.js"></script>
 </body>
 </html>
